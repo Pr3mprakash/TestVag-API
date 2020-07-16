@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="780df378-1ef6-4042-8a90-f9a753544790" activeEnvironment="Default" name="TestVagrant" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="TestSuite" value="TestSuite 1"/>
+  <con:entry key="Endpoint" value=""/>
+  <con:entry key="Select Report Type" value=""/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="Print Report" value="true"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Export JUnit Results with test properties" value="false"/>
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="TestCase" value="TestCase 1"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="user-settings.xml Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Environment" value="Default"/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="Root Folder" value=""/>
+  <con:entry key="Ignore Errors" value="true"/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Save Project" value="false"/>
+</xml-fragment>]]></con:setting></con:settings><con:interface xsi:type="con:RestService" id="6fa8e96b-e7ca-4158-a52b-82554529e733" wadlVersion="http://wadl.dev.java.net/2009/02" name="https://api.openweathermap.org" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>https://api.openweathermap.org</con:endpoint></con:endpoints><con:resource name="2.5" path="/weather?q={City}&amp;appid={key}" id="0223a3a4-2e9b-4ef4-88a1-cd7d8a36c3ca"><con:settings/><con:parameters><con:parameter><con:name>City</con:name><con:value>Chennai</con:value><con:style>TEMPLATE</con:style><con:default>Chennai</con:default></con:parameter><con:parameter><con:name>key</con:name><con:value/><con:style>TEMPLATE</con:style><con:default/></con:parameter></con:parameters><con:method name="2.5 1" id="95290eee-d574-481e-97ed-352fc4f62afd" method="GET"><con:settings/><con:parameters/><con:representation type="FAULT"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>401</con:status><con:params/><con:element xmlns:ns="https://api.openweathermap.org/data/2.5/">ns:Fault</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType>application/json; charset=utf-8</con:mediaType><con:status>200</con:status><con:params/><con:element xmlns:ns="https://api.openweathermap.org/data/2.5/">ns:Response</con:element></con:representation><con:representation type="FAULT"><con:mediaType>text/html</con:mediaType><con:status>404</con:status><con:params/><con:element>html</con:element></con:representation><con:representation type="RESPONSE"><con:mediaType xsi:nil="true"/><con:status>0</con:status><con:params/><con:element>data</con:element></con:representation><con:request name="Request 1" id="e33dd04f-a959-4689-b74d-8070f022e4ba" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://api.openweathermap.org/data/2.5/</con:endpoint><con:request/><con:originalUri>https://api.openweathermap.org/data/2.5/</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="City" value="Mysore"/>
+  <con:entry key="key" value="800a0e4fab9257b3d823530c23faafbb"/>
+</con:parameters><con:parameterOrder><con:entry>City</con:entry><con:entry>key</con:entry></con:parameterOrder></con:request></con:method></con:resource></con:interface><con:testSuite id="5bd03354-ed20-4219-84f8-6db9ce666fe4" name="TestSuite 1"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="87637cb0-d565-4160-ac6d-b86224ae6a23" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="TestCase 1" searchProperties="true"><con:settings/><con:testStep type="groovy" name="Groovy Script" id="dc1c587f-72d3-4367-ac3d-54c13a47e425"><con:settings/><con:config><script>// IMPORT THE LIBRARIES WE NEED
+
+import com.eviware.soapui.support.XmlHolder
+import jxl.*
+import jxl.write.*
+groovyutils = new com.eviware.soapui.support.GroovyUtils(context)
+// DECLARE THE VARIABLES
+
+def myTestCase = context.testCase //myTestCase contains the test case
+
+def counter,next,previous,size //Variables used to handle the loop and to move inside the file
+
+projectpath = groovyutils.projectPath
+d = projectpath+ "\\" + "Data" + "\\" + "Book1.xls"
+
+Workbook workbook1 = Workbook.getWorkbook(new File(d)) //file containing the data
+
+Sheet sheet1 = workbook1.getSheet(0) //Index 0 will read the first sheet from the workbook, you can also specify the sheet name with "Sheet1"
+//Sheet sheet1 = workbook1.getSheet("Sheet1")
+
+size= sheet1.getRows().toInteger() //get the number of rows, each row is a data set
+
+propTestStep = myTestCase.getTestStepByName("Properties") // get the Property TestStep object
+
+propTestStep.setPropertyValue("Total", size.toString())
+
+counter = propTestStep.getPropertyValue("Count").toString() //counter variable contains iteration number
+
+counter = counter.toInteger()
+
+next = (counter > size-2? 0: counter+1) //set the next value
+
+// OBTAINING THE DATA YOU NEED
+
+log.info(counter)
+Cell f1 = sheet1.getCell(0,counter) // getCell(column,row) //obtains field1
+Cell f2 = sheet1.getCell(1,counter) // getCell(column,row) //obtains field2
+
+workbook1.close() //close the file
+
+////////////////////////////////////
+
+field1 = f1.getContents()
+field2 = f2.getContents()
+
+propTestStep.setPropertyValue("Field1", field1) //the value is saved in the property
+propTestStep.setPropertyValue("Field2", field2) //the value is saved in the property
+
+propTestStep.setPropertyValue("Count", next.toString()) //increase Count value
+
+next++ //increase next value
+
+propTestStep.setPropertyValue("Next", next.toString()) //set Next value on the properties step
+
+//Decide if the test has to be run again or not
+
+if (counter == size-1)
+
+{
+
+propTestStep.setPropertyValue("StopVal", "T")
+
+log.info "Setting the StopVal property now..."
+
+}
+
+else if (counter==0)
+
+{
+
+def runner = new com.eviware.soapui.impl.wsdl.testcase.WsdlTestCaseRunner(testRunner.testCase, null)
+
+propTestStep.setPropertyValue("StopVal", "F")
+
+}
+
+else
+
+{
+
+propTestStep.setPropertyValue("StopVal", "F")
+
+}</script></con:config></con:testStep><con:testStep type="properties" name="Properties" id="960d3f9a-8012-4d77-b690-8df5428a5ce9"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>Total</con:name><con:value>10</con:value></con:property><con:property><con:name>StopVal</con:name><con:value>T</con:value></con:property><con:property><con:name>Next</con:name><con:value>1</con:value></con:property><con:property><con:name>Field2</con:name><con:value>Mysore</con:value></con:property><con:property><con:name>Field1</con:name><con:value>9</con:value></con:property><con:property><con:name>Count</con:name><con:value>0</con:value></con:property><con:property><con:name>City</con:name><con:value xsi:nil="true"/></con:property></con:properties></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="587207c0-11f4-4445-b0b4-926d80a36c5c"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>City</con:name><con:sourceType>Field2</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>City</con:targetType><con:targetStep>REST Request</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="REST Request" id="7fab4868-b580-43af-a777-07fb91c2109f"><con:settings/><con:config service="https://api.openweathermap.org" methodName="2.5 1" resourcePath="/weather?q={City}&amp;appid={key}" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="ac31744a-4beb-46f2-9077-b827f40d49ab" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>https://api.openweathermap.org/data/2.5/</con:endpoint><con:request/><con:originalUri>https://api.openweathermap.org/weather</con:originalUri><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters>
+  <con:entry key="City" value="Mysore"/>
+  <con:entry key="key" value="800a0e4fab9257b3d823530c23faafbb"/>
+</con:parameters></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer2" id="d6804c20-7506-4fc3-937c-c5c28c806299"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>Humid</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>REST Request</con:sourceStep><con:sourcePath>$['main'].['humidity']</con:sourcePath><con:targetType>Humidity</con:targetType><con:targetStep>Properties2</con:targetStep><con:type>JSONPATH</con:type><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>temp</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>REST Request</con:sourceStep><con:sourcePath>$['main'].['temp']</con:sourcePath><con:targetType>temperature</con:targetType><con:targetStep>Properties2</con:targetStep><con:type>JSONPATH</con:type><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="properties" name="Properties2" id="afd3fba9-e8c7-4ebc-a582-3d0e71df2e96"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>Humidity</con:name><con:value>77</con:value></con:property><con:property><con:name>temperature</con:name><con:value>297.73</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="groovy" name="CusPro -append" id="756b1981-3224-4734-bd20-4663456c909f"><con:settings/><con:config><script>//hum
+def myTestCase = context.testCase
+propTestStep = myTestCase.getTestStepByName("Properties2")
+
+def Hum = propTestStep.getPropertyValue("Humidity").toString()
+def tem=testRunner.testCase.getPropertyValue("Humidity");
+log.info(tem);
+def newhum=tem +";" + Hum  ;
+testRunner.testCase.setPropertyValue("Humidity",newhum)
+
+
+def tempera= propTestStep.getPropertyValue("temperature").toString()
+def tempe=testRunner.testCase.getPropertyValue("temperature");
+def newtemp= tempe + ";" + tempera;
+testRunner.testCase.setPropertyValue("temperature",newtemp)</script></con:config></con:testStep><con:testStep type="groovy" name="writeecel-notworking" id="6a36b67f-ffe4-4f11-ba5b-f59bedba96ce" disabled="true"><con:settings/><con:config><script>
+import com.eviware.soapui.support.XmlHolder
+import jxl.*
+import jxl.write.*
+import com.eviware.soapui.support.XmlHolder
+import java.io.File
+import java.io.IOException
+import jxl.*
+import jxl.read.biff.BiffException
+import jxl.write.*
+import jxl.write.Label
+
+// DECLARE THE VARIABLES
+
+def myTestCase = context.testCase //myTestCase contains the test case
+
+def counter,next,previous,size //Variables used to handle the loop and to move inside the file
+
+Workbook workbook1 = Workbook.getWorkbook(new File("C:\\Users\\Princ3-PC\\Desktop\\TestVagrant\\Data\\Book1.xls")) //file containing the data
+Sheet sheet1 = workbook1.getSheet(1) 
+
+propTestStep = myTestCase.getTestStepByName("Properties")
+counter = propTestStep.getPropertyValue("Count").toString() //counter variable contains iteration number
+counter = counter.toInteger()
+
+
+
+
+
+  WritableSheet workSheet = workbook1.getSheet(2);
+  workSheet.addCell(new jxl.write.Label(1,1,"User Name"));
+
+
+
+
+
+//
+////WritableWorkbook workbookCopy = Workbook.createWorkbook(new File(inputDataFileName), existingWorkbook);
+//WritableSheet sheetToEdit = workbookCopy.getSheet(inputDataSheetName);
+// WritableCell cell;
+// 
+//
+////WritableCell tmpA = sheet1.getCell(1,counter);
+//String s1 = "asjdkajsdkjaslkd";
+////String s1 = tmpA.getContents();
+//log.info("$s1");
+//log.info(counter);
+//Label label = new Label(1,counter,s1);
+//cell = (WritableCell) label;
+//sheetToEdit.addCell(cell);
+
+
+
+workbook1.close()
+</script></con:config></con:testStep><con:testStep type="groovy" name="test-notowkring" id="f8dfe6ce-c785-4166-ada0-42776a889e5e" disabled="true"><con:settings/><con:config><script>import org.apache.*;
+
+FileInputStream fsIP= new FileInputStream(new File("C:\\Users\\Princ3-PC\\Desktop\\TestVagrant\\Data\\Book1.xls")); //Read the spreadsheet that needs to be updated
+HSSFWorkbook wb = new HSSFWorkbook(fsIP); //Access the workbook
+HSSFSheet worksheet = wb.getSheetAt(2);
+
+a=json.AMT.toString()
+b=(json.Date.toString()).substring(0,10)
+c=json.Num.toString() 
+
+//Cell cell = null; // declare a Cell object
+ cell = worksheet.getRow(i).getCell(14);   // Access the second cell in second row to update the value
+ cell.setCellValue(a);  // Get current cell value value and overwrite the value
+ cell = worksheet.getRow(i).getCell(15);
+ cell.setCellValue(b);
+ cell = worksheet.getRow(i).getCell(16);
+ cell.setCellValue(c);
+ fsIP.close(); //Close the InputStream
+
+ FileOutputStream output_file =new FileOutputStream(new File("C:/FileLocation/File2.xls"));  //Open FileOutputStream to write updates
+ wb.write(output_file); //write changes
+ output_file.close();  //close the stream</script></con:config></con:testStep><con:testStep type="groovy" name="Writeexcel-notworking" id="7a58c14a-2cc5-43a7-981f-f0dd4878a11e" disabled="true"><con:settings/><con:config><script>import jxl.*;
+import jxl.write.*
+
+Workbook workbook = Workbook.getWorkbook(new File("C:\\Users\\Princ3-PC\\Desktop\\TestVagrant\\Data\\Book1.xls"));
+WritableWorkbook copy = Workbook.createWorkbook(new File("C:\\Users\\Princ3-PC\\Desktop\\TestVagrant\\Data\\Data-API.xls"), workbook);
+
+Sheet sheet1 = copy.getSheet("Sheet1");
+WritableSheet sheet2 = copy.getSheet("Sheet1");
+
+def myTestCase = context.testCase;
+propTestStep = myTestCase.getTestStepByName("Properties")
+counter = propTestStep.getPropertyValue("Count").toString() //counter variable contains iteration number
+counter = counter.toInteger()
+
+log.info("writeexcel");
+log.info(counter);
+
+propTestStep1 = myTestCase.getTestStepByName("Properties2")
+Humid = propTestStep1.getPropertyValue("Humidity").toString() 
+temp = propTestStep1.getPropertyValue("temperature").toString() 
+
+WritableCell tmpA = sheet1.getCell(0,1);
+
+
+Label label = new Label(2,counter,Humid);
+sheet2.addCell(label);
+
+
+Label label2 = new Label(3,counter,temp);
+sheet2.addCell(label2);
+
+copy.write();
+copy.close();
+workbook.close();</script></con:config></con:testStep><con:testStep type="groovy" name="looping" id="27f9a3b8-a33b-4f28-909e-7f05f77a3c04"><con:settings/><con:config><script>def myTestCase = context.testCase
+def runner
+
+propTestStep = myTestCase.getTestStepByName("Properties") // get the Property TestStep
+
+endLoop = propTestStep.getPropertyValue("StopVal").toString()
+
+if (endLoop.toString() == "T" || endLoop.toString()=="True" || endLoop.toString()=="true")
+
+{
+
+log.info ("Exit Groovy Data Source Looper")
+
+assert true
+
+}
+
+else
+
+{
+
+testRunner.gotoStepByName("Groovy Script") //setStartStep
+
+}</script></con:config></con:testStep><con:testStep type="groovy" name="writeexcel" id="bd4c0024-4c32-42f4-ac47-4090049a4366"><con:settings/><con:config><script>import jxl.*;
+import jxl.write.*
+
+
+groovyutils = new com.eviware.soapui.support.GroovyUtils(context)
+
+def hum=testRunner.testCase.getPropertyValue("Humidity");
+def tem=testRunner.testCase.getPropertyValue("temperature");
+
+def thum=hum.split(';');
+def ttem=tem.split(';');
+
+//for (i = 0; i &lt;10; i++) {
+//   log.info(thum[i]);
+//}
+projectpath = groovyutils.projectPath
+d = projectpath+ "\\" + "Data" + "\\" + "Book1.xls"
+e=projectpath+ "\\" + "Data" + "\\" + "Data-API.xls"
+
+Workbook workbook = Workbook.getWorkbook(new File(d));
+WritableWorkbook copy = Workbook.createWorkbook(new File(e), workbook);
+
+Sheet sheet1 = copy.getSheet("Sheet1");
+size= sheet1.getRows().toInteger()
+
+log.info(size);
+WritableSheet sheet2 = copy.getSheet("Sheet1");
+//
+
+//WritableCell tmpA = sheet1.getCell(0,1);
+for (i = 1; i &lt;size; i++)
+{
+	log.info(thum[i]);
+	log.info(ttem[i]);
+Label label = new Label(2,i,thum[i]);
+sheet2.addCell(label);
+
+Label label2 = new Label(3,i,ttem[i]);
+sheet2.addCell(label2);
+}
+
+copy.write();
+copy.close();
+workbook.close();
+//
+testRunner.testCase.setPropertyValue("Humidity","");
+testRunner.testCase.setPropertyValue("temperature","");
+</script></con:config></con:testStep><con:properties><con:property><con:name>Humidity</con:name><con:value/></con:property><con:property><con:name>temperature</con:name><con:value/></con:property></con:properties></con:testCase><con:properties><con:property><con:name>row</con:name><con:value>A7</con:value></con:property></con:properties></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:sensitiveInformation/></con:soapui-project>
